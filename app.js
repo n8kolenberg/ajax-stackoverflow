@@ -62,9 +62,9 @@ var getUnanswered = function(tags) {
 	
 	// the parameters we need to pass in our request to StackOverflow's API
 	var request = {tagged: tags,
-								site: 'stackoverflow',
-								order: 'desc',
-								sort: 'creation'};
+				   site: 'stackoverflow',
+				   order: 'desc',
+				   sort: 'creation'};
 	
 	var result = $.ajax({
 		url: "http://api.stackexchange.com/2.2/questions/unanswered",
@@ -80,7 +80,7 @@ var getUnanswered = function(tags) {
 		$.each(result.items, function(i, item) {
 			var question = showQuestion(item);
 			$('.results').append(question);
-			console.log(result.items);
+			// console.log(result.items);
 		});
 	})
 	.fail(function(jqXHR, error, errorThrown){
@@ -102,14 +102,14 @@ var getTopAnswerers = function (tag) {
 		period: 'all_time'
 	}; 
 
-	var result = $.ajax({
-		url: "http://api.stackexchange.com/2.2/tags/{tag}/top-answerers/{period}",
+		var result = $.ajax({
+		url: "http://api.stackexchange.com/2.2/tags/"+request.tag+"/top-answerers/"+request.period,
 		data: request,
 		dataType: "jsonp",
 		type: "GET"
 	}) //End $.ajax
-	.done(function(result){
-		$.each(result.items, function(i, item) {
+	.done(function(result) {
+		$.each(result, function(i, item) {
 			console.log(item);
 		});//End $.each
 	}); //End done
