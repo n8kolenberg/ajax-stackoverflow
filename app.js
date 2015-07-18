@@ -109,8 +109,8 @@ var getTopAnswerers = function (tag) {
 		type: "GET"
 	}) //End $.ajax
 	.done(function(result) {
-		$.each(result, function(i, item) {
-			console.log(item);
+		$.each(result.items, function(i, item) {
+			console.log(item.user.display_name);
 		});//End $.each
 	}); //End done
 	
@@ -119,7 +119,8 @@ var getTopAnswerers = function (tag) {
 
 getTopAnswerers("jQuery");
 
-
+//Available information on Top Answerers object
+//
 
 
 
