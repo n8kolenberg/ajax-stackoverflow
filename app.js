@@ -5,7 +5,20 @@ $(document).ready( function() {
 		// get the value of the tags the user submitted
 		var tags = $(this).find("input[name='tags']").val();
 		getUnanswered(tags);
-	});
+	}); //End submit for .unanswered-getter
+
+	$('.inspiration-getter').submit( function(event){
+		// zero out results if previous search has run
+		$('.results').html('');
+		// get the value of the tag the user submitted
+		var tag = $(this).find("input[name='answerers']").val();
+		getTopAnswerers(tag);
+	});//End submit for .inspiration-getter
+
+
+
+
+
 }); //End Ready
 
 // this function takes the question object returned by StackOverflow 
@@ -89,11 +102,42 @@ var getUnanswered = function(tags) {
 	}); 
 }; //End getUnanswered
 
+
 /*====================Inspiration Piece=========================*/
+/*===============================================================*/
+var showAnswerer = function(answerer) {
+	
+	// clone our result template code
+	var result = $('.templates .answerer').clone();
+	
+	// Set the link to the answerer profile in result
+	var answererElem = result.find('.link a');
+	answererElem.attr('href', answerer.user.link);
+	answererElem.text('Link to User Profile');
+
+	// set the display name property in result
+	var displayName = result.find('.display-name');
+	displayName.text(answerer.user.display_name);
+
+	// set the Reputation property in result
+	var reputation = result.find('.reputation');
+	reputation.text(answerer.user.reputation);
+
+	// set the Accept Rate property in result
+	var acceptRate = result.find('.accept-rate');
+	acceptRate.text(answerer.user.accept_rate);
+
+	return result;
+};
+
+
+
+
+
 
 //takes a string of tag to be searched
 //for on StackOverflow for Top Answerers
-var getTopAnswerers = function (tag) {
+var getTopAnswerers = function(tag) {
 
 	//the parameters we need to pass in our request to SO's API
 	var request = {
@@ -110,17 +154,34 @@ var getTopAnswerers = function (tag) {
 	}) //End $.ajax
 	.done(function(result) {
 		$.each(result.items, function(i, item) {
-			console.log(item.user.display_name);
+			var answerer = showAnswerer(item);
+			$('.results').append(answerer);
+
+			var displayName = item.user.display_name;
+			var reputation = item.user.reputation;
+			var acceptRate = item.user.accept_rate;
+			var link = item.user.link
+			console.log("Name :" + displayName + '\n' + 
+						"Reputation: " + reputation + '\n' +
+						"Accept Rate: " + acceptRate + '\n' + 
+						"Link: " + link + '\n');
+
 		});//End $.each
 	}); //End done
 	
 
 } //End getTopAnswerers
 
-getTopAnswerers("jQuery");
+// getTopAnswerers("jQuery");
 
 //Available information on Top Answerers object
-//
+/*
+- display_name
+ - reputation
+ - accept_rate 
+ - link
+
+*/
 
 
 
