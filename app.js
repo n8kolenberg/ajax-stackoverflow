@@ -15,10 +15,6 @@ $(document).ready( function() {
 		getTopAnswerers(tag);
 	});//End submit for .inspiration-getter
 
-
-
-
-
 }); //End Ready
 
 // this function takes the question object returned by StackOverflow 
@@ -103,7 +99,7 @@ var getUnanswered = function(tags) {
 }; //End getUnanswered
 
 
-/*====================Inspiration Piece=========================*/
+/*====================Inspiration Part of Task====================*/
 /*===============================================================*/
 var showAnswerer = function(answerer) {
 	
@@ -113,7 +109,7 @@ var showAnswerer = function(answerer) {
 	// Set the link to the answerer profile in result
 	var answererElem = result.find('.link a');
 	answererElem.attr('href', answerer.user.link);
-	answererElem.text('Link to User Profile');
+	answererElem.text(answerer.user.link);
 
 	// set the display name property in result
 	var displayName = result.find('.display-name');
@@ -129,10 +125,6 @@ var showAnswerer = function(answerer) {
 
 	return result;
 };
-
-
-
-
 
 
 //takes a string of tag to be searched
@@ -157,32 +149,14 @@ var getTopAnswerers = function(tag) {
 			var answerer = showAnswerer(item);
 			$('.results').append(answerer);
 
-			var displayName = item.user.display_name;
-			var reputation = item.user.reputation;
-			var acceptRate = item.user.accept_rate;
-			var link = item.user.link
-			console.log("Name :" + displayName + '\n' + 
-						"Reputation: " + reputation + '\n' +
-						"Accept Rate: " + acceptRate + '\n' + 
-						"Link: " + link + '\n');
-
 		});//End $.each
-	}); //End done
-	
+	}) //End done
+	.fail( function(jqXHR, error, errorThrown) {
+		var errorElem = showError(error);
+		$('.search-results').append(errorElem);
+
+	}); //End fail	
 
 } //End getTopAnswerers
-
-// getTopAnswerers("jQuery");
-
-//Available information on Top Answerers object
-/*
-- display_name
- - reputation
- - accept_rate 
- - link
-
-*/
-
-
 
 
